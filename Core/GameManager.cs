@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    PlayerController controller;
-    [SerializeField]
-    GameObject userInterface;
-
-    void Awake()
-    {
-
-    }
+    [SerializeField] PlayerController controller;
+    [SerializeField] GameObject userInterface;
+    [SerializeField] UserInterfaceManager userInterfacemanager;
 
     public void PauseMenu()
     {
@@ -21,6 +13,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             controller.IsInputEnable = true;
             userInterface.SetActive(false);
+            userInterfacemanager.ToggleSettings(false);
             Debug.Log("UserInterface Disabled");
         }
         else
@@ -34,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitGame()
     {
+        Debug.Log("Exit.....");
         Application.Quit();
     }
 }
