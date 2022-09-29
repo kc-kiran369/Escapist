@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GamePlayManager : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
     [SerializeField] GameObject userInterface;

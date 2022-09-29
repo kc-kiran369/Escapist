@@ -3,9 +3,8 @@ using UnityEngine.InputSystem;
 
 public class InputHandeler : MonoBehaviour
 {
-    
     [SerializeField] PlayerController player;
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GamePlayManager gameManager;
     //Ref to New Input Asset
     public InputMaster input;
 
@@ -16,26 +15,14 @@ public class InputHandeler : MonoBehaviour
         input.Game.Quit.performed += ctx1 => OnEscapePressed();
         input.PlayerAction.Move.performed += ctx2 => OnMovement(ctx2.ReadValue<Vector2>());
         input.PlayerAction.Mouse.performed += ctx3 => OnMousePositionChanged(ctx3.ReadValue<Vector2>());
+        input.PlayerAction.Shoot.performed += ctx4 => OnMouseLeftPressed();
         input.PlayerAction.Aim.performed += ctx4 => OnMouseRightPressed();
     }
 
     private void Update()
     {
-        //if (player.IsInputEnable)
-        {
-            OnMovement(input.PlayerAction.Move.ReadValue<Vector2>());
-            OnMousePositionChanged(input.PlayerAction.Mouse.ReadValue<Vector2>());
-            if (input.PlayerAction.Move.WasPressedThisFrame())
-            {
-                player.animator.SetBool("canRun",true);
-                Debug.Log("Can Run : True");
-            }
-            if (input.PlayerAction.Move.WasReleasedThisFrame())
-            {
-                player.animator.SetBool("canRun",false);
-                Debug.Log("Can Run : False");
-            }
-        }
+        OnMovement(input.PlayerAction.Move.ReadValue<Vector2>());
+        OnMousePositionChanged(input.PlayerAction.Mouse.ReadValue<Vector2>());
     }
     void OnSpacePressed()
     {
@@ -47,7 +34,7 @@ public class InputHandeler : MonoBehaviour
     }
     void OnMovement(Vector2 vector)
     {
-        player.ChangeTransform(vector);
+        player.ChangeTransform(vector, input);
     }
     void OnMousePositionChanged(Vector2 vector)
     {
@@ -55,7 +42,7 @@ public class InputHandeler : MonoBehaviour
     }
     void OnMouseLeftPressed()
     {
-
+        player.Shoot();
     }
     void OnMouseRightPressed()
     {

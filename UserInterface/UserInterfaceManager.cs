@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UserInterfaceManager : MonoBehaviour
 {
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject SettingsPanel;
+    [SerializeField] TMP_Dropdown m_GraphicDropdown;
 
     private void Awake()
     {
@@ -17,9 +20,13 @@ public class UserInterfaceManager : MonoBehaviour
         Debug.Log("Toggle : Setting Panel");
     }
 
-    public void SetQuality(int index)
+    public void SetQuality()
     {
-        QualitySettings.SetQualityLevel(index);
-        Debug.Log("Quality Setting to : " + index);
+        QualitySettings.SetQualityLevel(m_GraphicDropdown.value);
+        Debug.Log("Quality Setting to : " + m_GraphicDropdown.value);
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
