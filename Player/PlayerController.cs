@@ -1,59 +1,35 @@
 using Cinemachine;
 using UnityEngine;
-
+using TMPro;
 public class PlayerController : MonoBehaviour
 {
-
     [SerializeField] internal Animator animator;
     [SerializeField] CinemachineVirtualCamera v_camera;
 
     public Gun gun;
-
-    new Rigidbody rigidbody;
-
-    public bool IsInputEnable { get; set; } = false;
+    public bool IsInputEnable { get; set; } = true;
     public float Sensitivity { get; set; } = 5.0f;
 
-    private float jumpForce = 300.0f;
-    private Vector3 direction;
     private bool isAim = false;
-    private float playerSpeed = 3.0f;
 
-    private bool turnLeft = false, turnRight = false;
-
-    private void Awake()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-    }
     public void ChangeTransform(Vector2 vector, InputMaster input)
     {
-        direction = new Vector3(vector.x * Time.deltaTime * playerSpeed, 0, vector.y * Time.deltaTime * playerSpeed);
-        if (vector.x >= 0.5f)
-        {
-            turnLeft = true;
-            animator.SetBool("turnLeft", turnLeft);
-        }
-        if (vector.x <= 0.5f)
-        {
-            turnLeft = false;
-            animator.SetBool("turnLeft", turnLeft);
-        }
         if (input.PlayerAction.Move.WasPressedThisFrame())
         {
             animator.SetBool("canRun", true);
-           
+            Debug.Log("run anim");
         }
         if (input.PlayerAction.Move.WasReleasedThisFrame())
         {
             animator.SetBool("canRun", false);
+            Debug.Log("dont run anim");
         }
-        transform.Translate(direction);
-        Debug.Log(vector);
+        animator.SetBool("turnRight", (vector.x > 0.8f ? true : false));
+        animator.SetBool("turnLeft", (vector.x < -0.8f ? true : false));
     }
     public void Jump()
     {
         animator.SetTrigger("jump");
-        //rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         print("jump");
     }
     public void Aim()

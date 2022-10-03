@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class InputHandeler : MonoBehaviour
 {
@@ -8,27 +9,28 @@ public class InputHandeler : MonoBehaviour
     //Ref to New Input Asset
     public InputMaster input;
 
+    [SerializeField] TMP_Text text;
+
     void Awake()
     {
         input = new InputMaster();
-        input.PlayerAction.Jump.performed += ctx => OnSpacePressed();
-        input.Game.Quit.performed += ctx1 => OnEscapePressed();
-        input.PlayerAction.Move.performed += ctx2 => OnMovement(ctx2.ReadValue<Vector2>());
-        input.PlayerAction.Mouse.performed += ctx3 => OnMousePositionChanged(ctx3.ReadValue<Vector2>());
-        input.PlayerAction.Shoot.performed += ctx4 => OnMouseLeftPressed();
-        input.PlayerAction.Aim.performed += ctx4 => OnMouseRightPressed();
+        input.Game.Quit.performed += OnEscapePressed;
+        input.PlayerAction.Jump.performed += OnSpacePressed;
+        input.PlayerAction.Aim.performed += OnMouseRightPressed;
+        input.PlayerAction.Shoot.performed += OnMouseLeftPressed;
+        input.PlayerAction.Move.performed += context => OnMovement(context.ReadValue<Vector2>());
+        input.PlayerAction.Mouse.performed += context1 => OnMousePositionChanged(context1.ReadValue<Vector2>());
     }
 
     private void Update()
     {
         OnMovement(input.PlayerAction.Move.ReadValue<Vector2>());
-        OnMousePositionChanged(input.PlayerAction.Mouse.ReadValue<Vector2>());
     }
-    void OnSpacePressed()
+    void OnSpacePressed(InputAction.CallbackContext context)
     {
         player.Jump();
     }
-    void OnEscapePressed()
+    void OnEscapePressed(InputAction.CallbackContext context)
     {
         gameManager.PauseMenu();
     }
@@ -40,15 +42,14 @@ public class InputHandeler : MonoBehaviour
     {
         player.ProcessMouse(vector);
     }
-    void OnMouseLeftPressed()
+    void OnMouseLeftPressed(InputAction.CallbackContext context)
     {
         player.Shoot();
     }
-    void OnMouseRightPressed()
+    void OnMouseRightPressed(InputAction.CallbackContext context)
     {
         player.Aim();
     }
-
     private void OnEnable()
     {
         input.Enable();
