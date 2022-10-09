@@ -9,8 +9,6 @@ public class InputHandeler : MonoBehaviour
     //Ref to New Input Asset
     public InputMaster input;
 
-    [SerializeField] TMP_Text text;
-
     void Awake()
     {
         input = new InputMaster();
@@ -24,7 +22,8 @@ public class InputHandeler : MonoBehaviour
 
     private void Update()
     {
-        OnMovement(input.PlayerAction.Move.ReadValue<Vector2>());
+        if (player.IsInputEnable)
+            OnMovement(input.PlayerAction.Move.ReadValue<Vector2>());
     }
     void OnSpacePressed(InputAction.CallbackContext context)
     {
@@ -40,7 +39,8 @@ public class InputHandeler : MonoBehaviour
     }
     void OnMousePositionChanged(Vector2 vector)
     {
-        player.ProcessMouse(vector);
+        if (player.IsInputEnable)
+            player.ProcessMouse(vector);
     }
     void OnMouseLeftPressed(InputAction.CallbackContext context)
     {

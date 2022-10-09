@@ -14,18 +14,14 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeTransform(Vector2 vector, InputMaster input)
     {
-        if (input.PlayerAction.Move.WasPressedThisFrame())
-        {
-            animator.SetBool("canRun", true);
-            Debug.Log("run anim");
-        }
+        animator.SetBool("turnRight", (vector.x > 0.7f ? true : false));
+        animator.SetBool("turnLeft", (vector.x < -0.7f ? true : false));
+        animator.SetBool("canRun", (vector.y > 0.8f ? true : false));
         if (input.PlayerAction.Move.WasReleasedThisFrame())
         {
             animator.SetBool("canRun", false);
             Debug.Log("dont run anim");
         }
-        animator.SetBool("turnRight", (vector.x > 0.8f ? true : false));
-        animator.SetBool("turnLeft", (vector.x < -0.8f ? true : false));
     }
     public void Jump()
     {

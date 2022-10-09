@@ -4,6 +4,7 @@ public class GamePlayManager : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
     [SerializeField] GameObject userInterface;
+   
     [SerializeField] UserInterfaceManager userInterfacemanager;
 
     public void PauseMenu()
