@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 
 public class MainMenuUIHandeler : MonoBehaviour
 {
-    [SerializeField] GameObject map;
-    [SerializeField] Button joinButton;
+    [SerializeField] GameObject map, joinMenu;
+    [SerializeField] Button hostButton, joinButton;
     [SerializeField] TMP_Text selectedMapText;
     [SerializeField] LevelManager levelManager;
 
@@ -15,6 +14,7 @@ public class MainMenuUIHandeler : MonoBehaviour
     private void OnEnable()
     {
         map.SetActive(false);
+        joinMenu.SetActive(false);
     }
 
     public void OnHostClicked()
@@ -23,7 +23,7 @@ public class MainMenuUIHandeler : MonoBehaviour
     }
     public void OnJoinClicked()
     {
-
+        JoinConfig();
     }
     public void OnStartClicked()
     {
@@ -40,7 +40,7 @@ public class MainMenuUIHandeler : MonoBehaviour
                 selectedMapText.text = "Selected Map : School";
                 break;
             case 2:
-                selectedMapText.text = "Selected Map : Village";
+                selectedMapText.text = "Selected Map : Not Declared";
                 break;
             case 3:
                 selectedMapText.text = "Selected Map : Training";
@@ -67,6 +67,20 @@ public class MainMenuUIHandeler : MonoBehaviour
         {
             map.SetActive(true);
             joinButton.interactable = false;
+        }
+    }
+
+    private void JoinConfig()
+    {
+        if (joinMenu.activeSelf)
+        {
+            joinMenu.SetActive(false);
+            hostButton.interactable = true;
+        }
+        else
+        {
+            joinMenu.SetActive(true);
+            hostButton.interactable = false;
         }
     }
 

@@ -1,49 +1,51 @@
 using Cinemachine;
 using UnityEngine;
-using TMPro;
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] internal Animator animator;
-    [SerializeField] CinemachineVirtualCamera v_camera;
-
-    public Gun gun;
+    [SerializeField] internal Animator m_Animator;
+    [SerializeField] CinemachineVirtualCamera m_AimCam;
+    [SerializeField] Gun m_Gun;
     public bool IsInputEnable { get; set; } = true;
-    public float Sensitivity { get; set; } = 5.0f;
+    public float Sensitivity { get; set; } = 1.0f;
 
+    private float m_SensitivityMultiplier = 5.0f;
     private bool isAim = false;
-
+    private void Start()
+    {
+        m_Animator = GetComponent<Animator>();
+    }
     public void ChangeTransform(Vector2 vector, InputMaster input)
     {
-        animator.SetBool("turnRight", (vector.x > 0.7f ? true : false));
-        animator.SetBool("turnLeft", (vector.x < -0.7f ? true : false));
-        animator.SetBool("canRun", (vector.y > 0.8f ? true : false));
-        if (input.PlayerAction.Move.WasReleasedThisFrame())
-        {
-            animator.SetBool("canRun", false);
-            Debug.Log("dont run anim");
-        }
+        m_Animator.SetBool("turnRight", (vector.x > 0.7f ? true : false));
+        m_Animator.SetBool("turnLeft", (vector.x < -0.7f ? true : false));
+        m_Animator.SetBool("canRun", (vector.y > 0.8f ? true : false));
     }
     public void Jump()
     {
-        animator.SetTrigger("jump");
-        print("jump");
+        m_Animator.SetTrigger("jump");
     }
     public void Aim()
     {
         if (!isAim)
+        {
             isAim = true;
+            m_AimCam.gameObject.SetActive(true);
+        }
         else
+        {
             isAim = false;
-        animator.SetBool("aim", isAim);
+            m_AimCam.gameObject.SetActive(false);
+        }
+        m_Animator.SetBool("aim", isAim);
     }
     public void Shoot()
     {
         if (!isAim)
             return;
-        gun.Fire();
+        m_Gun?.Fire();
     }
     public void ProcessMouse(Vector2 vector)
     {
-        transform.Rotate(0, vector.x * Sensitivity * Time.deltaTime, 0);
+        transform.Rotate(0, vector.x * Sensitivity * m_SensitivityMultiplier * Time.deltaTime, 0);
     }
 }
